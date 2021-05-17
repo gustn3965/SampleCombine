@@ -3,6 +3,8 @@
 
 This is simple Combine example. 
 
+In sign-up process like inputing id and password, If whole is correct,  then create-button will be available with green color.  
+
 ![combine](source/combine.gif)
 
 I made this simple project looks like example showed in [WWDC](https://developer.apple.com/videos/play/wwdc2019/721/) as possible. 
