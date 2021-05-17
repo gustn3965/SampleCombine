@@ -82,6 +82,15 @@ extension ViewController {
     @IBAction func checkPasswordChanged(_ sender: UITextField) {
         checkPassword = sender.text ?? ""
     }
+    
+    // MARK: - 키보드에 따른 반응
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        self.view.endEditing(true)
+    }
+    @IBAction func touchCreateButton(_ sender: UIButton) {
+        self.view.endEditing(true)
+    }
 }
 
 

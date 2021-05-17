@@ -103,6 +103,9 @@
                                         <state key="normal" title="Create Account">
                                             <color key="titleColor" red="0.99991279840000002" green="1" blue="0.99988144639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="touchCreateButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uQl-uT-maZ"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
