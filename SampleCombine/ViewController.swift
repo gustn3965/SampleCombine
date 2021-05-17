@@ -55,6 +55,7 @@ class ViewController: UIViewController {
     func validateCredential() {
         validateCredentials = Publishers.CombineLatest($id, validatePasswordsPublisher!)
             .map { $0.count > 3 && $1 }
+            .receive(on: RunLoop.main)
             .assign(to: \.isEnabled, on: createButton)
     }
 }
