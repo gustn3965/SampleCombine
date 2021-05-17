@@ -5,7 +5,7 @@ This is simple Combine example.
 
 ![combine](source/combine.gif)
 
-I made this simple prjoject looks like example showed in [WWDC](https://developer.apple.com/videos/play/wwdc2019/721/) as possible. 
+I made this simple project looks like example showed in [WWDC](https://developer.apple.com/videos/play/wwdc2019/721/) as possible. 
 
 To be honest, It is really not same. because I except server process. 
 
