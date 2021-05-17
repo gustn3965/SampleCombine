@@ -7,52 +7,82 @@
 
 import UIKit
 import Combine
-//protocol Subscriber {
-//    associatedtype Input
-//    associatedtype Failure: Error
-//
-////    func receive(subscription: Sucription)
-//}
-//protocol Publisher {
-//    associatedtype Output
-//    associatedtype Failure: Error
-//
-//    func subscribe<S: Subscriber>(_ subscriber: S) where S.Input == Output, S.Failure == Failure
-//}
-//struct LabelPublisher: Publisher {
-//    func subscribe<S>(_ subscriber: S) where S : Subscriber, Never == S.Failure, UILabel == S.Input {
-//        <#code#>
-//    }
-//
-//    typealias Output = String
-//    typealias Failure = Never
-//}
+
 
 class ViewController: UIViewController {
-    @IBOutlet weak var label: UILabel!
-    var publisher: NotificationCenter.Publisher?
-    var cancel: AnyCancellable?
+    
+    @IBOutlet weak var idTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var checkPasswordTextField: UITextField!
+    @IBOutlet weak var createButton: CustomButton!
+    
+    @IBOutlet weak var idImage: UIImageView!
+    @IBOutlet weak var passwordImage: UIImageView!
+    @IBOutlet weak var checkPasswordImage: UIImageView!
+    
+    @Published var id: String = ""
+    @Published var password: String = ""
+    @Published var checkPassword: String = ""
+    
+    var validatePasswordsPublisher: AnyPublisher<Bool, Never>?
+    var validatePasswords: AnyCancellable?
+    var validateCredentials: AnyCancellable?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        useCombine()
+        createPasswordPublisher()
+        validatePassword()
+        validateCredential()
+    }
+
+    func createPasswordPublisher() {
+        validatePasswordsPublisher =  Publishers.CombineLatest($password, $checkPassword)
+            .map { pass, check  -> String in
+                guard pass == check, pass.count > 8 else { return "" }
+                return pass
+            }
+            .map{ !$0.isEmpty }
+            .eraseToAnyPublisher()
     }
     
-    func useCombine() {
-
-        cancel = NotificationCenter.default.publisher(for: Notification.Name(rawValue: "Name"))
-            .compactMap { note  in
-                return note.userInfo?["changeName"] as? String
-            }
-            .assign(to: \.text, on: label)
+    func validatePassword() {
+        validatePasswords = validatePasswordsPublisher!
+            .sink(receiveValue: { [weak self] success in
+                self?.checkPasswordImage.tintColor = success ? .systemGreen : .white
+            })
     }
-
+    
+    func validateCredential() {
+        validateCredentials = Publishers.CombineLatest($id, validatePasswordsPublisher!)
+            .map { $0.count > 3 && $1 }
+            .assign(to: \.isEnabled, on: createButton)
+    }
 }
 
 extension ViewController {
-    @IBAction func clickButton() {
-        let a = String([1,2,3,4,5].randomElement()!)
-        print(a)
-        NotificationCenter.default.post(name: NSNotification.Name("Name"), object: nil, userInfo: ["changeName" : a])
+
+    @IBAction func idChanged(_ sender: UITextField) {
+        id = sender.text ?? ""
+        if id.count > 3 {
+            idImage.tintColor = .systemGreen
+        } else {
+            idImage.tintColor = .white
+        }
+    }
+    
+    @IBAction func passwordChanged(_ sender: UITextField) {
+        password = sender.text ?? ""
+        if password.count > 8 {
+            passwordImage.tintColor = .systemGreen
+        } else {
+            passwordImage.tintColor = .white
+        }
+    }
+    
+    @IBAction func checkPasswordChanged(_ sender: UITextField) {
+        checkPassword = sender.text ?? ""
     }
 }
+
+
 
