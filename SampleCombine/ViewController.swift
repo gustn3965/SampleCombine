@@ -11,6 +11,7 @@ import Combine
 
 class ViewController: UIViewController {
     
+    // MARK: - IBOutlet
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var checkPasswordTextField: UITextField!
@@ -20,14 +21,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var passwordImage: UIImageView!
     @IBOutlet weak var checkPasswordImage: UIImageView!
     
+    // MARK: - Publisher
     @Published var id: String = ""
     @Published var password: String = ""
     @Published var checkPassword: String = ""
-    
     var validatePasswordsPublisher: AnyPublisher<Bool, Never>?
+    
+    // MARK: - Subscriber
     var validatePasswords: AnyCancellable?
     var validateCredentials: AnyCancellable?
     
+    // MARK: - Method
     override func viewDidLoad() {
         super.viewDidLoad()
         createPasswordPublisher()
@@ -60,6 +64,7 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - IBAction
 extension ViewController {
 
     @IBAction func idChanged(_ sender: UITextField) {
